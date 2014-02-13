@@ -2,19 +2,35 @@
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{F4E955E5-E6D7-49A4-BD5B-43FED09E801A}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{BA82307B-7F48-4C26-8152-C7A377CED20A}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CaSharpServer</RootNamespace>
-    <AssemblyName>CaSharpServer</AssemblyName>
+    <RootNamespace>test_client</RootNamespace>
+    <AssemblyName>test_client</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -23,7 +39,8 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -38,6 +55,7 @@
     <DebugType>full</DebugType>
     <PlatformTarget>x64</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
     <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
     <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
   </PropertyGroup>
@@ -48,7 +66,6 @@
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>x64</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
     <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
     <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
   </PropertyGroup>
@@ -62,40 +79,36 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CABeacon.cs" />
-    <Compile Include="CAChannelMonitor.cs" />
-    <Compile Include="CAFieldAttribute.cs" />
-    <Compile Include="CAUdpListener.cs" />
-    <Compile Include="Constants\AccessRights.cs" />
-    <Compile Include="Constants\AlarmSeverity.cs" />
-    <Compile Include="Constants\AlarmStatus.cs" />
-    <Compile Include="Constants\CAConstants.cs" />
-    <Compile Include="RecordTypes\CAArrayRecord.cs" />
-    <Compile Include="RecordTypes\CAByteArrayRecord.cs" />
-    <Compile Include="RecordTypes\CADoubleRecord.cs" />
-    <Compile Include="RecordTypes\CAIntArrayRecord.cs" />
-    <Compile Include="RecordTypes\CARecord.cs" />
-    <Compile Include="CARecordCollection.cs" />
-    <Compile Include="RecordTypes\CARecordGeneric.cs" />
-    <Compile Include="CAServer.cs" />
-    <Compile Include="CAServerChannel.cs" />
-    <Compile Include="CATcpConnection.cs" />
-    <Compile Include="Constants\CommandId.cs" />
-    <Compile Include="Constants\EpicsTransitionStatus.cs" />
-    <Compile Include="Constants\EpicsType.cs" />
-    <Compile Include="Constants\MonitorMask.cs" />
-    <Compile Include="ByteConverter.cs" />
-    <Compile Include="Constants\ScanAlgorithm.cs" />
-    <Compile Include="RecordTypes\CAStringRecord.cs" />
-    <Compile Include="RecordTypes\CAValueRecord.cs" />
-    <Compile Include="RecordTypes\CAIntRecord.cs" />
-    <Compile Include="RecordTypes\CAFloatRecord.cs" />
-    <Compile Include="RecordTypes\CAShortRecord.cs" />
-    <Compile Include="Pipe.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="CAServerFilter.cs" />
-    <Compile Include="RecordTypes\CAFloatArrayRecord.cs" />
-    <Compile Include="RecordTypes\CADoubleArrayRecord.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4 Client Profile %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\client\EpicsClient2.csproj">
+      <Project>{A1BED09B-5D49-4480-A6DD-736B681493A6}</Project>
+      <Name>EpicsClient2</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
