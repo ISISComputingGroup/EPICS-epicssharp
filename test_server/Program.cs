@@ -27,7 +27,13 @@ namespace test_server
 
         static int findFreePort()
         {
-            int port = 5064;  //Try the default first
+            //If we pick up port 5064 first then the next IOC that starts does not
+            //realise that we are already using it!
+            //So that IOC does not work!
+            //As a temporary work round we start at 10000 and hope any IOCs started do not clash!
+
+            //int port = 5064;  //Try the default first
+            int port = 10000;
 
             if (isPortUsed(port))
             {
@@ -73,7 +79,8 @@ namespace test_server
         {
             int port = findFreePort();
             Console.WriteLine("Connecting to tcp port: " + port);
-            CAServer server = new CAServer(IPAddress.Parse("130.246.49.5"), port, 5064);
+            CAServer server = new CAServer(IPAddress.Parse("130.246.49.5"), port, 5064, 5065);
+            //CAServer server = new CAServer(getIP(), port, 5064);
             intRecord = server.CreateRecord<CAIntRecord>("TESTSERVER:INT");
             intRecord.PrepareRecord += new EventHandler(intRecord_PrepareRecord);
             intRecord.Scan = CaSharpServer.Constants.ScanAlgorithm.SEC5;

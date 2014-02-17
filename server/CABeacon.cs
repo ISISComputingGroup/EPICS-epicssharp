@@ -49,6 +49,7 @@ namespace CaSharpServer
                     foreach(var i in serverIps)
                     {
                         byte[] buff=beaconMessage(endPoint.Port,(counter++),i.GetAddressBytes());
+                        
                         udp.Send(buff, buff.Length, endPoint);
                     }
                 }
