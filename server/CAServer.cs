@@ -67,6 +67,14 @@ namespace CaSharpServer
             tcpListener.Start();
             tcpListener.BeginAcceptSocket(RecieveConn, tcpListener);
 
+            if (tcpPort == 0)
+            {
+                //If the port was 0 then the OS will pick a port
+                //therefore record the value
+                IPEndPoint endpoint = (IPEndPoint)tcpListener.LocalEndpoint;
+                this.tcpPort = endpoint.Port;
+            }
+
             checkConnections = new Thread(new ThreadStart(ConnectionChecker));
             checkConnections.IsBackground = true;
             checkConnections.Start();

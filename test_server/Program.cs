@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using CaSharpServer;
 using System.Net;
+using System.Net.Sockets;
 using System.Net.NetworkInformation;
 
 namespace test_server
@@ -14,72 +15,31 @@ namespace test_server
         static CAIntRecord intRecord;
         static CAStringRecord strRecord;
 
-        static String getIP()
-        {
-            var hostEntry = Dns.GetHostEntry(Dns.GetHostName());
-            String ip = (
-                       from addr in hostEntry.AddressList
-                       where addr.AddressFamily.ToString() == "InterNetwork"
-                       select addr.ToString()
-                ).FirstOrDefault();
-            return ip;
-        }
-
-        static int findFreePort()
-        {
-            //If we pick up port 5064 first then the next IOC that starts does not
-            //realise that we are already using it!
-            //So that IOC does not work!
-            //As a temporary work round we start at 10000 and hope any IOCs started do not clash!
-
-            //int port = 5064;  //Try the default first
-            int port = 10000;
-
-            if (isPortUsed(port))
-            {
-                port = 10000;
-
-                while (isPortUsed(port))
-                {
-                    ++port;
-                }
-            }
-
-            return port;
-        }
-
-        private static bool isPortUsed(int port)
-        {
-            IPGlobalProperties ipGlobalProperties = IPGlobalProperties.GetIPGlobalProperties();
-            TcpConnectionInformation[] tcpConnInfoArray = ipGlobalProperties.GetActiveTcpConnections();
-            IPEndPoint[] udpListerners = ipGlobalProperties.GetActiveUdpListeners();
-
-            //check tcp
-            foreach (TcpConnectionInformation tcp in tcpConnInfoArray)
-            {
-                if (tcp.LocalEndPoint.Port == port)
-                {
-                    return true;
-                }
-            }
-
-            //check udp
-            for (int i = 0; i < udpListerners.Length; ++i)
-            {
-                if (udpListerners[i].Port == port)
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
         static void Main(string[] args)
         {
-            int port = findFreePort();
-            Console.WriteLine("Connecting to tcp port: " + port);
-            CAServer server = new CAServer(IPAddress.Parse("130.246.49.5"), port, 5064, 5065);
+            int port = 5064;          
+            CAServer server = null;
+
+            try
+            {
+                //null = IP.Any
+                server = new CAServer(null, port, 5064, 5065);
+                Console.WriteLine("Connected to configured TCP port (" + port + ")");
+            }
+            catch (SocketException e)
+            {
+                if (e.SocketErrorCode == SocketError.AddressAlreadyInUse)
+                {
+                    //the port is already in use, so ask the OS for a free port
+                    server = new CAServer(null, 0, 5064, 5065);
+                    Console.WriteLine("Configured TCP port was unavailable.");
+                    Console.WriteLine("Using dynamically assigned TCP port " + server.TcpPort);
+                }
+                else
+                {
+                    Console.WriteLine("Could not create CAServer: " + e.Message);
+                }
+            }
             //CAServer server = new CAServer(getIP(), port, 5064);
             intRecord = server.CreateRecord<CAIntRecord>("TESTSERVER:INT");
             intRecord.PrepareRecord += new EventHandler(intRecord_PrepareRecord);
