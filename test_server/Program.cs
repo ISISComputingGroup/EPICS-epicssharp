@@ -40,7 +40,7 @@ namespace test_server
                     Console.WriteLine("Could not create CAServer: " + e.Message);
                 }
             }
-            //CAServer server = new CAServer(getIP(), port, 5064);
+
             intRecord = server.CreateRecord<CAIntRecord>("TESTSERVER:INT");
             intRecord.PrepareRecord += new EventHandler(intRecord_PrepareRecord);
             intRecord.Scan = CaSharpServer.Constants.ScanAlgorithm.SEC5;
@@ -49,6 +49,7 @@ namespace test_server
             strRecord.Value = "Default";
 
             Console.ReadLine();
+            server.Dispose();
         }
 
         static void intRecord_PrepareRecord(object sender, EventArgs e)

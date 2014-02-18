@@ -44,7 +44,44 @@ namespace CaSharpServer
                 Record = Server.records[ChannelName];
             if (!Record.CanBeRemotlySet)
                 Access = AccessRights.ReadOnly;
-            TcpConnection.Send(Server.Filter.ChannelCreatedMessage(ClientId, ServerId, FindType(Record[Property].GetType()), Record.dataCount, Access));
+            TcpConnection.Send(Server.Filter.ChannelCreatedMessage(ClientId, ServerId, FindType(Record), Record.dataCount, Access));
+            //TcpConnection.Send(Server.Filter.ChannelCreatedMessage(ClientId, ServerId, FindType(Record[Property].GetType()), Record.dataCount, Access));
+
+        }
+
+        EpicsType FindType(CARecord record)
+        {
+            Type type = record.GetType();
+
+            if (type == typeof(CAByteArrayRecord))
+            {
+                return EpicsType.SByte;
+            }
+            else if (type == typeof(CADoubleArrayRecord) || type == typeof(CADoubleRecord))
+            {
+                return EpicsType.Double;
+            }
+            else if (type == typeof(CAFloatArrayRecord) || type == typeof(CAFloatRecord))
+            {
+                return EpicsType.Float;
+            }
+            else if (type == typeof(CAIntArrayRecord) || type == typeof(CAIntRecord))
+            {
+                return EpicsType.Int;
+            }
+                else if (type == typeof(CAShortRecord))
+            {
+                    return EpicsType.Short;
+            }
+            else if (type == typeof(CAStringRecord))
+            {
+                return EpicsType.String;
+            }
+            else
+            {
+                Console.WriteLine("Unknown type " + type.Name);
+                return EpicsType.Invalid;
+            }
         }
 
         EpicsType FindType(Type type)
@@ -102,7 +139,7 @@ namespace CaSharpServer
         {
             byte[] val;
 
-            if(Record.Scan == ScanAlgorithm.PASSIVE)
+            if (Record.Scan == ScanAlgorithm.PASSIVE)
                 Record.CallPrepareRecord();
             object objVal = Record[Property];
             if (objVal == null)
