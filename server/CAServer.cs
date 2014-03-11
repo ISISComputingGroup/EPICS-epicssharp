@@ -86,7 +86,7 @@ namespace CaSharpServer
         {
             while (running)
             {
-                Thread.Sleep(10000);
+                Thread.Sleep(4000);
 
                 CATcpConnection[] list;
                 lock (openConnection)
@@ -94,7 +94,9 @@ namespace CaSharpServer
                     list = openConnection.Values.ToArray();
                 }
                 foreach (var i in list)
+                {
                     i.Send(CAServerFilter.EchoMessage);
+                }
             }
         }
 

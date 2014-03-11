@@ -57,7 +57,7 @@ namespace CaSharpServer
                     readedBytes += (payloadSize + 16);
                 }
 
-                payload = dataPipe.Read(Convert.ToInt32(payloadSize));
+                payload = dataPipe.Read(Convert.ToInt32(payloadSize));                        
 
                 HandleMessage(cmdId, dataType, ref payloadSize, ref dataCount,
                               ref param1, ref param2, ref header, ref payload, ref remoteEndPoint);
