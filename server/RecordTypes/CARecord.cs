@@ -75,7 +75,7 @@ namespace CaSharpServer
         [CAField("DESC")]
         public string Description { get; set; }
 
-        protected DateTime lastProccessed = DateTime.Now;
+        protected DateTime lastProccessed = DateTime.UtcNow;
         /// <summary>
         /// The time when this record was last processed.
         /// </summary>
@@ -98,7 +98,7 @@ namespace CaSharpServer
 
         internal virtual void ProcessRecord()
         {
-            lastProccessed = DateTime.Now;
+            lastProccessed = DateTime.UtcNow;
             if (RecordProcessed != null)
                 RecordProcessed(this, null);
             IsDirty = false;
