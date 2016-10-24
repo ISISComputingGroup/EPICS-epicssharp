@@ -13,3 +13,4 @@ runIOC.sh
 relPaths.sh
 /server/bin/
 /server/obj/
+.project
